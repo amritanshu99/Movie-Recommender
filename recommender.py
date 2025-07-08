@@ -1,12 +1,13 @@
 # recommender.py
-import pickle
+import joblib
 from rapidfuzz import process
 
-# 1️⃣ Load pickled data (once)
-with open("recommender.pkl", "rb") as f:
-    df, cosine_sim, indices = pickle.load(f)
+# 1️⃣ Load compressed model from repo (must be < 100MB to avoid GitHub issues)
+print("📦 Loading recommender model...")
+df, cosine_sim, indices = joblib.load("recommender.pkl")
+print("✅ Model loaded successfully!")
 
-# 2️⃣ Match closest movie name using fuzzy match
+# 2️⃣ Match closest movie title using fuzzy match
 def get_closest_title(input_title, all_titles):
     match = process.extractOne(input_title, all_titles, score_cutoff=60)
     if match:
